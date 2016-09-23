@@ -7,7 +7,6 @@
 namespace xutl\qcloud;
 
 use yii\base\Component;
-use yii\httpclient\Client;
 use yii\base\InvalidConfigException;
 
 /**
@@ -17,144 +16,124 @@ use yii\base\InvalidConfigException;
 class Qcloud extends Component
 {
     /**
-     * MODULE_ACCOUNT
      * 用户账户
      */
-    const MODULE_ACCOUNT = 'account';
+    const API_ACCOUNT = 'account';
 
     /**
-     * MODULE_CVM
-     * 云服务器
-     */
-    const MODULE_CVM = 'cvm';
-
-    /**
-     * MODULE_CDB
-     * CDB数据库
-     */
-    const MODULE_CDB = 'cdb';
-
-    /**
-     * MODULE_LB
-     * 负载均衡
-     */
-    const MODULE_LB = 'lb';
-
-    /**
-     * MODULE_TRADE
-     * 产品售卖
-     */
-    const MODULE_TRADE = 'trade';
-
-    /**
-     * MODULE_BILL
      * 账单
      */
-    const MODULE_BILL = 'bill';
+    const API_BILL = 'bill';
 
     /**
-     * MODULE_SEC
-     * 云安全
+     * 黑石BM
      */
-    const MODULE_SEC = 'sec';
+    const API_BM = 'bm';
 
     /**
-     * MODULE_IMAGE
-     * 镜像
+     * 云硬盘
      */
-    const MODULE_IMAGE = 'image';
+    const API_CBS = 'cbs';
 
     /**
-     * MODULE_MONITOR
-     * 云监控
+     * CDB数据库
      */
-    const MODULE_MONITOR = 'monitor';
+    const API_CDB = 'cdb';
 
     /**
-     * MODULE_CDN
      * CDN
      */
-    const MODULE_CDN = 'cdn';
+    const API_CDN = 'cdn';
 
     /**
-     * MODULE_VPC
-     * VPC
+     * 云缓存
      */
-    const MODULE_VPC = 'vpc';
+    const API_CMEM = 'cmem';
 
     /**
-     * MODULE_VOD
-     * VOD
+     * 云解析
      */
-    const MODULE_VOD = 'vod';
+    const API_CNS = 'cns';
 
     /**
-     * YUNSOU
+     * 云服务器
      */
-    const MODULE_YUNSOU = 'yunsou';
+    const API_CVM = 'cvm';
 
     /**
-     * cns
+     * 弹性公网Ip
      */
-    const MODULE_CNS = 'cns';
+    const API_EIP = 'eip';
 
     /**
-     * wenzhi
+     * 镜像
      */
-    const MODULE_WENZHI = 'wenzhi';
+    const API_IMAGE = 'image';
+
+    /**
+     * 负载均衡
+     */
+    const API_LB = 'lb';
+
+    /**
+     * 直播
+     */
+    const API_LIVE = 'live';
 
     /**
      * MARKET
      */
-    const MODULE_MARKET = 'market';
+    const API_MARKET = 'market';
 
     /**
-     * MODULE_EIP
-     * 弹性公网Ip
+     * 云监控
      */
-    const MODULE_EIP = 'eip';
+    const API_MONITOR = 'monitor';
 
     /**
-     * MODULE_LIVE
-     * 直播
-     */
-    const MODULE_LIVE = 'live';
-
-    /**
-     * MODULE_SNAPSHOT
-     * 快照
-     */
-    const MODULE_SNAPSHOT = 'snapshot';
-
-    /**
-     * MODULE_CBS
-     * 云硬盘
-     */
-    const MODULE_CBS = 'cbs';
-
-    /**
-     * MODULE_SCALING
      * 弹性伸缩
      */
-    const MODULE_SCALING = 'scaling';
+    const API_SCALING = 'scaling';
 
     /**
-     * MODULE_CMEM
-     * 云缓存
+     * 云安全
      */
-    const MODULE_CMEM = 'cmem';
+    const API_SEC = 'sec';
 
     /**
-     * MODULE_TDSQL
+     * 快照
+     */
+    const API_SNAPSHOT = 'snapshot';
+
+    /**
      * 云数据库TDSQL
      */
-    const MODULE_TDSQL = 'tdsql';
+    const API_TDSQL = 'tdsql';
 
     /**
-     * MODULE_BM
-     * 黑石BM
+     * 产品售卖
      */
-    const MODULE_BM = 'bm';
+    const API_TRADE = 'trade';
+
+    /**
+     * 视频云
+     */
+    const API_VOD = 'vod';
+
+    /**
+     * VPC
+     */
+    const API_VPC = 'vpc';
+
+    /**
+     * 文智
+     */
+    const API_WENZHI = 'wenzhi';
+
+    /**
+     * 云搜
+     */
+    const API_YUNSOU = 'yunsou';
 
     /**
      * @var string
@@ -179,12 +158,34 @@ class Qcloud extends Component
     public $requestMethod = "POST";
 
     /**
+     * 服务器地址
      * @var array
      */
     protected $_serverHosts = [
         'account' => 'account.api.qcloud.com',
         'bill' => 'bill.api.qcloud.com',
+        'bm' => 'bm.api.qcloud.com',
+        'cbs' => 'cbs.api.qcloud.com',
+        'cdb' => 'cdb.api.qcloud.com',
+        'cdn' => 'cdn.api.qcloud.com',
+        'cmem' => 'cmem.api.qcloud.com',
+        'cns' => 'cns.api.qcloud.com',
+        'cvm' => 'cvm.api.qcloud.com',
+        'eip' => 'eip.api.qcloud.com',
+        'image' => 'image.api.qcloud.com',
+        'lb' => 'lb.api.qcloud.com',
+        'live' => 'live.api.qcloud.com',
+        'market' => 'market.api.qcloud.com',
+        'monitor' => 'monitor.api.qcloud.com',
+        'scaling' => 'scaling.api.qcloud.com',
+        'sec' => 'csec.api.qcloud.com',
+        'snapshot' => 'snapshot.api.qcloud.com',
+        'tdsql' => 'tdsql.api.qcloud.com',
+        'trade' => 'trade.api.qcloud.com',
+        'vod' => 'vod.api.qcloud.com',
+        'vpc' => 'vpc.api.qcloud.com',
         'wenzhi' => 'wenzhi.api.qcloud.com',
+        'yunsou' => 'yunsou.api.qcloud.com',
     ];
 
     /**
