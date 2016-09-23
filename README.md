@@ -40,9 +40,6 @@ return [
 Usage
 -----
 
-The following
-single line of code in a view file would render a [JQuery UI DatePicker](http://api.jqueryui.com/datepicker/) widget:
-
 ```php
 use xutl\qcloud\Qcloud;
 
