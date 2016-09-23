@@ -1,5 +1,7 @@
 # yii2-qcloud
 
+适用于Yii2的[腾讯云](http://www.qcloud.com)API接口类。
+
 Installation
 ------------
 
