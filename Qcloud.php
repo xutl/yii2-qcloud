@@ -159,30 +159,24 @@ class Qcloud extends Component
     /**
      * @var string
      */
-    public $_secretId;
+    public $secretId;
 
     /**
      * @var string
      */
-    public $_secretKey;
+    public $secretKey;
 
     /**
      * 请求的Uri
      * @var string
      */
-    public $_serverUri = '/v2/index.php';
-
-    /**
-     * 区域参数
-     * @var string
-     */
-    public $_defaultRegion = "";
+    public $serverUri = '/v2/index.php';
 
     /**
      * 请求方法
      * @var string
      */
-    public $_requestMethod = "POST";
+    public $requestMethod = "POST";
 
     /**
      * @var array
@@ -199,14 +193,11 @@ class Qcloud extends Component
     public function init()
     {
         parent::init();
-        if ($this->_secretId === null) {
+        if ($this->secretId === null) {
             throw new InvalidConfigException('The "secretId" property must be set.');
         }
-        if ($this->_secretKey === null) {
+        if ($this->secretKey === null) {
             throw new InvalidConfigException('The "secretKey" property must be set.');
-        }
-        if ($this->_defaultRegion === null) {
-            throw new InvalidConfigException('The "defaultRegion" property must be set.');
         }
     }
 
@@ -221,18 +212,20 @@ class Qcloud extends Component
     }
 
     /**
-     * @param $service
-     * @return Client
+     * 创建API请求
+     * @param string $service 服务名称
+     * @param string|null $region 区域名称
+     * @return Request
      */
-    public function load($service)
+    public function createRequest($service, $region = null)
     {
         $serverHost = $this->getServerHost($service);
         return new Request([
-            'secretId' => $this->_secretId,
-            'secretKey' => $this->_secretKey,
-            'defaultRegion' => $this->_defaultRegion,
-            'requestMethod' => $this->_requestMethod,
-            'serverUri' => $this->_serverUri,
+            'secretId' => $this->secretId,
+            'secretKey' => $this->secretKey,
+            'defaultRegion' => $region,
+            'requestMethod' => $this->requestMethod,
+            'serverUri' => $this->serverUri,
             'serverHost' => $serverHost
         ]);
     }
