@@ -21,8 +21,8 @@ or add
 
 to the require section of your `composer.json` file.
 
-Configuration
--------------
+配置
+----
 
 To use this extension, you have to configure the Connection class in your application configuration:
 
@@ -39,8 +39,8 @@ return [
 ];
 ```
 
-Usage
------
+使用
+----
 
 ```php
 use xutl\qcloud\Qcloud;
@@ -55,8 +55,9 @@ $package = [
 print_r($wenzhi->TextKeywords($package));
 ```
 
-#### 资源
+资源
+-----
 
 * [公共参数](http://wiki.qcloud.com/wiki/%E5%85%AC%E5%85%B1%E5%8F%82%E6%95%B0)
 * [API列表](http://wiki.qcloud.com/wiki/API)
-* [错误码](http://wiki.qcloud.com/wiki/%E9%94%99%E8%AF%AF%E7%A0
+* [错误码](http://wiki.qcloud.com/wiki/%E9%94%99%E8%AF%AF%E7%A0%81)
