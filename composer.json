@@ -9,12 +9,22 @@
   "type": "yii2-extension",
   "license": "MIT",
   "require": {
-    "yiisoft/yii2": "~2.0.0",
-    "yiisoft/yii2-httpclient": "*"
+    "yiisoft/yii2": "~2.0.6",
+    "yiisoft/yii2-httpclient": "~2.0.0"
   },
   "autoload": {
     "psr-4": {
       "xutl\\qcloud\\": ""
     }
-  }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    },
+    {
+      "type": "composer",
+      "url": "https://packagist.phpcomposer.com"
+    }
+  ]
 }
