@@ -16,7 +16,7 @@ php composer.phar require --prefer-dist xutl/yii2-qcloud
 or add
 
 ```
-"xutl/yii2-qcloud": "~1.0.0"
+"xutl/yii2-qcloud": "~2.0.0"
 ```
 
 to the require section of your `composer.json` file.
@@ -56,7 +56,9 @@ $package = [
 print_r($wenzhi->TextKeywords($package));
 ```
 
-v2.0 使用方法
+v2.0 使用方法 QCloud::API_CNS 这个接口名称，可以直接输入字符串，会和主机头组合起来作为Host,第二个参数是可用区，按照说明可为空，
+但是有些地区不能为空。
+
 ```php
 use xutl\qcloud\Qcloud;
 
