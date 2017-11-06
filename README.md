@@ -2,6 +2,8 @@
 
 适用于Yii2的[腾讯云](http://www.qcloud.com)API接口类。
 
+1.0.x 和  2.0.x 不兼容，但都是可用的。
+
 Installation
 ------------
 
