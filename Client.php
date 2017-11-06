@@ -76,9 +76,6 @@ class Client extends \yii\httpclient\Client
         if ($this->secretKey === null) {
             throw new InvalidConfigException('The "secretKey" property must be set.');
         }
-        if ($this->region === null) {
-            throw new InvalidConfigException('The "region" property must be set.');
-        }
         $this->baseUrl = ($this->secureConnection ? 'https://' : 'http://') . $this->serverHost . $this->serverUri;
         $this->responseConfig['format'] = \yii\httpclient\Client::FORMAT_JSON;
         $this->on(Client::EVENT_BEFORE_SEND, [$this, 'RequestEvent']);
@@ -92,7 +89,7 @@ class Client extends \yii\httpclient\Client
     public function RequestEvent(RequestEvent $event)
     {
         $params = $event->request->getData();
-        if (!isset($params['Region'])) {
+        if (!isset($params['Region']) && !empty($this->region)) {
             $params['Region'] = $this->region;
         }
         if (!isset($params['SecretId'])) {
