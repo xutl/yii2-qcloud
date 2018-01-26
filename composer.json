@@ -14,17 +14,18 @@
   },
   "autoload": {
     "psr-4": {
-      "xutl\\qcloud\\": ""
+      "xutl\\qcloud\\": "src"
     }
   },
   "repositories": [
     {
       "type": "composer",
       "url": "https://asset-packagist.org"
-    },
-    {
-      "type": "composer",
-      "url": "https://packagist.phpcomposer.com"
     }
-  ]
+  ],
+  "extra": {
+    "branch-alias": {
+      "dev-master": "2.0-dev"
+    }
+  }
 }

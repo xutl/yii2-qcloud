@@ -62,7 +62,7 @@ class QCloud extends Component
     public function createRequest($service, $region = null)
     {
         $serverHost = $service . '.api.qcloud.com';
-        return (new Client([
+        return (new BaseClient([
             'serverHost' => $serverHost,
             'secretId' => $this->secretId,
             'secretKey' => $this->secretKey,

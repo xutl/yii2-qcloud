@@ -7,6 +7,8 @@
 
 namespace xutl\qcloud;
 
+use yii\di\Instance;
+use yii\httpclient\Client;
 use yii\base\InvalidConfigException;
 use yii\httpclient\RequestEvent;
 
@@ -14,7 +16,7 @@ use yii\httpclient\RequestEvent;
  * Class Client
  * @package xutl\qcloud
  */
-class Client extends \yii\httpclient\Client
+class BaseClient extends Client
 {
     const SIGNATURE_METHOD_HMAC_SHA1 = 'HmacSHA1';
     const SIGNATURE_METHOD_HMAC_SHA256 = 'HmacSHA256';
@@ -30,36 +32,14 @@ class Client extends \yii\httpclient\Client
     public $secretKey;
 
     /**
-     * @var string 服务主机名
-     */
-    public $serverHost;
-
-    /**
-     * 区域参数
-     * @var string
-     */
-    public $region;
-
-    /**
-     * @var bool 是否使用安全连接
-     */
-    public $secureConnection = true;
-
-    /**
-     * 请求的Uri
-     * @var string
-     */
-    public $serverUri = '/v2/index.php';
-
-    /**
      * @var string
      */
     protected $signatureMethod = self::SIGNATURE_METHOD_HMAC_SHA256;
 
     /**
-     * @var string 版本号
+     * @var string|QCloud
      */
-    private $_version = 'SDK_PHP_1.0';
+    public $qcloud = 'qcloud';
 
     /**
      * @inheritdoc
@@ -67,18 +47,17 @@ class Client extends \yii\httpclient\Client
     public function init()
     {
         parent::init();
-        if ($this->serverHost === null) {
-            throw new InvalidConfigException('The "serverHost" property must be set.');
+        $this->qcloud = Instance::ensure($this->qcloud, Qcloud::className());
+        if (empty ($this->secretId)) {
+            $this->secretId = $this->qcloud->secretId;
         }
-        if ($this->secretId === null) {
-            throw new InvalidConfigException('The "secretId" property must be set.');
+        if (empty ($this->secretKey)) {
+            $this->secretKey = $this->qcloud->secretKey;
         }
-        if ($this->secretKey === null) {
-            throw new InvalidConfigException('The "secretKey" property must be set.');
-        }
-        $this->baseUrl = ($this->secureConnection ? 'https://' : 'http://') . $this->serverHost . $this->serverUri;
-        $this->responseConfig['format'] = \yii\httpclient\Client::FORMAT_JSON;
+        //$this->requestConfig['format'] = Client::FORMAT_JSON;
+        $this->responseConfig['format'] = Client::FORMAT_JSON;
         $this->on(Client::EVENT_BEFORE_SEND, [$this, 'RequestEvent']);
+        //$this->on(Client::EVENT_AFTER_SEND, [$this, 'ResponseEvent']);
     }
 
     /**
@@ -101,11 +80,11 @@ class Client extends \yii\httpclient\Client
         if (!isset($params['Timestamp'])) {
             $params['Timestamp'] = time();
         }
-        $params['RequestClient'] = $this->_version;
+        $params['RequestClient'] = 'Yii2_HTTP_CLIENT';
         $params['SignatureMethod'] = $this->signatureMethod;
 
         ksort($params);
-        $url = $this->serverHost . $this->serverUri;
+        $url = $this->baseUrl;
         $i = 0;
         foreach ($params as $key => $val) {
             if ($key == 'Signature' || ($event->request->getMethod() == 'POST' && substr($val, 0, 1) == '@')) {
