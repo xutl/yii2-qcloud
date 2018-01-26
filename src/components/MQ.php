@@ -12,13 +12,13 @@ use xutl\qcloud\BaseClient;
 use yii\base\InvalidConfigException;
 
 /**
- * Class Cmq
+ * Class MQ
  * @package xutl\qcloud\components
  *
  * @author Tongle Xu <xutongle@gmail.com>
  * @since 1.0
  */
-class Cmq extends BaseClient
+class MQ extends BaseClient
 {
     /**
      * @throws InvalidConfigException

@@ -10,11 +10,13 @@ namespace xutl\qcloud;
 use yii\di\ServiceLocator;
 use yii\base\InvalidConfigException;
 use xutl\qcloud\components\Cdn;
-use xutl\qcloud\components\Cmq;
+use xutl\qcloud\components\MQ;
+use xutl\qcloud\components\LB;
 
 /**
  * Class QCloud
  * @property Cdn $cdn CDN操控
+ * @property MQ $mq CMQ操控
  * @package xutl\qcloud
  */
 class QCloud extends ServiceLocator
@@ -84,12 +86,21 @@ class QCloud extends ServiceLocator
     }
 
     /**
-     * @return Cmq|object
+     * @return MQ|object
      * @throws InvalidConfigException
      */
-    public function getCmq()
+    public function getMq()
     {
-        return $this->get('cmq');
+        return $this->get('mq');
+    }
+
+    /**
+     * @return LB|object
+     * @throws InvalidConfigException
+     */
+    public function getLb()
+    {
+        return $this->get('lb');
     }
 
     /**
@@ -100,7 +111,8 @@ class QCloud extends ServiceLocator
     {
         return [
             'cdn' => ['class' => 'xutl\qcloud\components\Cdn'],
-            'cmq' => ['class' => 'xutl\qcloud\components\Cmq'],
+            'mq' => ['class' => 'xutl\qcloud\components\MQ'],
+            'lb' => ['class' => 'xutl\qcloud\components\LB'],
         ];
     }
 }
