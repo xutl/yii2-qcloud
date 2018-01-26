@@ -18,7 +18,7 @@ php composer.phar require --prefer-dist xutl/yii2-qcloud
 or add
 
 ```
-"xutl/yii2-qcloud": "~2.0.0"
+"xutl/yii2-qcloud": "~3.0.0"
 ```
 
 to the require section of your `composer.json` file.
@@ -36,6 +36,15 @@ return [
             'class' => 'xutl\qcloud\Qcloud',
             'secretId' => 'abcdefg',
             'secretKey' => 'abcdefg',
+            'params'=> [//这里是非扩展的配置参数，如队列任务等
+                'aaa.appvvvKey' => 123456789
+            ],
+            'components' => [
+               //各子组件配置，如果无需配置不写即可。也可动态注入配置。
+               //如果子组件使用独立的 `secretId` 和 `secretKey` 那么在子组件中单独配置即可，如果没有配置默认使用父  `accessId` 和 `accessKey` 。
+               //如果你自己扩展了其他的子组件，这里定义下新的组件配置即可，配置方式，数组接口和 YII 原生组件一致！
+              //etc
+            ]
         ],
     ]
 ];
@@ -43,49 +52,10 @@ return [
 
 使用
 ----
- 
- v1.0
-```php
-use xutl\qcloud\Qcloud;
-
-/** var Qcloud $qcloud */
-$qcloud = Yii::$app->qcloud;
-$wenzhi = $qcloud->createRequest(Qcloud::API_WENZHI,'gz');
-$package = [
-            'title'=>'啦啦啦啦啦啦',
-            "content"=>"操"
-        ];
-print_r($wenzhi->TextKeywords($package));
-```
-
-v2.0 使用方法 QCloud::API_CNS 这个接口名称，可以直接输入字符串，会和主机头组合起来作为Host,第二个参数是可用区，按照说明可为空，
-但是有些地区不能为空。
 
 ```php
-use xutl\qcloud\Qcloud;
-
-/** var Qcloud $qcloud */
-$qcloud = Yii::$app->qcloud;
-/** @var \yii\httpclient\Response $response */
-$response = $qcloud->createRequest(QCloud::API_CNS)->setData(['Action'=>'DomainList',])->send();;
-print_r($response->data);
-```
-
-v2.0 使用方法 2 ,适用于没有内置的接口，通过此方法来请求。
-```php
-use xutl\qcloud\Client;
-
-/** var Client $client */
-$request = (new Client([
-                      'serverHost' => 'cns.api.qcloud.com',
-                      'secretId' => '123456',
-                      'secretKey' => '654321',
-                      'region' => null
-                  ]))
-                  ->createRequest();
-                  
-/** @var \yii\httpclient\Response $response */
-$response = $request->setMethod('POST')->setData(['Action'=>'DomainList',])->send();;
+$cdn = Yii::$app->qcloud->cdn;
+$response = $cdn->describeCdnHosts();
 print_r($response->data);
 ```
 
