@@ -68,21 +68,14 @@ class BaseClient extends Client
     public function RequestEvent(RequestEvent $event)
     {
         $params = $event->request->getData();
-        if (!isset($params['Region']) && !empty($this->region)) {
+        if ((isset($this->region) && !empty($this->region)) && !isset($params['Region'])) {
             $params['Region'] = $this->region;
         }
-        if (!isset($params['SecretId'])) {
-            $params['SecretId'] = $this->secretId;
-        }
-        if (!isset($params['Nonce'])) {
-            $params['Nonce'] = uniqid();
-        }
-        if (!isset($params['Timestamp'])) {
-            $params['Timestamp'] = time();
-        }
+        $params['SecretId'] = $this->secretId;
+        $params['Nonce'] = uniqid();
+        $params['Timestamp'] = time();
         $params['RequestClient'] = 'Yii2_HTTP_CLIENT';
         $params['SignatureMethod'] = $this->signatureMethod;
-
         ksort($params);
         $url = $this->baseUrl;
         $i = 0;
@@ -105,6 +98,38 @@ class BaseClient extends Client
         } elseif ($this->signatureMethod == self::SIGNATURE_METHOD_HMAC_SHA1) {
             $params['Signature'] = base64_encode(hash_hmac('sha1', $plainText, $this->secretKey, true));
         }
+        $event->request->setUrl('index.php');
         $event->request->setData($params);
+    }
+
+    /**
+     * 通过__call转发请求
+     * @param string $name 方法名
+     * @param array $arguments 参数
+     * @return array
+     */
+    public function __call($name, $arguments)
+    {
+        $action = ucfirst($name);
+        $params = [];
+        if (is_array($arguments) && !empty($arguments)) {
+            $params = (array)$arguments[0];
+        }
+        $params['Action'] = $action;
+        return $this->_dispatchRequest($params);
+    }
+
+    /**
+     * 发起接口请求
+     * @param array $params 接口参数
+     * @return array
+     */
+    protected function _dispatchRequest($params)
+    {
+        $response = $this->createRequest()
+            ->setMethod('POST')
+            ->setData($params)
+            ->send();
+        return $response->data;
     }
 }

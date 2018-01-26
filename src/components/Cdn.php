@@ -10,12 +10,15 @@ namespace xutl\qcloud\components;
 use xutl\qcloud\BaseClient;
 
 /**
- * Class CCS
+ * Class Cdn
  * @package xutl\qcloud\components
  *
  * @author Tongle Xu <xutongle@gmail.com>
+ * @since 3.0
  */
-class CCS extends BaseClient
+class Cdn extends BaseClient
 {
-    public $baseUrl = '';
+    public $baseUrl = 'https://cdn.api.qcloud.com/v2';
+
+
 }

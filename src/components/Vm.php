@@ -5,17 +5,13 @@
  * @license http://www.tintsoft.com/license/
  */
 
+
 namespace xutl\qcloud\components;
+
 
 use xutl\qcloud\BaseClient;
 
-/**
- * Class CCS
- * @package xutl\qcloud\components
- *
- * @author Tongle Xu <xutongle@gmail.com>
- */
-class CCS extends BaseClient
+class Vm extends BaseClient
 {
-    public $baseUrl = '';
+
 }

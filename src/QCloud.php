@@ -7,14 +7,14 @@
 
 namespace xutl\qcloud;
 
-use yii\base\Component;
+use yii\di\ServiceLocator;
 use yii\base\InvalidConfigException;
 
 /**
  * Class QCloud
  * @package xutl\qcloud
  */
-class QCloud extends Component
+class QCloud extends ServiceLocator
 {
     /**
      * @var string
@@ -27,17 +27,35 @@ class QCloud extends Component
     public $secretKey;
 
     /**
-     * @var bool 是否使用安全连接
+     * @var array qcloud parameters (name => value).
      */
-    public $secureConnection = true;
+    public $params = [];
 
     /**
-     * 请求的Uri
-     * @var string
+     * Tim constructor.
+     * @param array $config
      */
-    public $serverUri = '/v2/index.php';
+    public function __construct($config = [])
+    {
+        $this->preInit($config);
+        parent::__construct($config);
+    }
 
-    public $defaultRegion = null;
+    /**
+     * 预处理组件
+     * @param array $config
+     */
+    public function preInit(&$config)
+    {
+        // merge core components with custom components
+        foreach ($this->coreComponents() as $id => $component) {
+            if (!isset($config['components'][$id])) {
+                $config['components'][$id] = $component;
+            } elseif (is_array($config['components'][$id]) && !isset($config['components'][$id]['class'])) {
+                $config['components'][$id]['class'] = $component['class'];
+            }
+        }
+    }
 
     /**
      * @inheritdoc
@@ -54,142 +72,15 @@ class QCloud extends Component
     }
 
     /**
-     * 创建API请求
-     * @param string $service 服务名称
-     * @param string|null $region 区域名称
-     * @return \yii\httpclient\Request
+     * Returns the configuration of aliyun components.
+     * @see set()
      */
-    public function createRequest($service, $region = null)
+    public function coreComponents()
     {
-        $serverHost = $service . '.api.qcloud.com';
-        return (new BaseClient([
-            'serverHost' => $serverHost,
-            'secretId' => $this->secretId,
-            'secretKey' => $this->secretKey,
-            'secureConnection' => $this->secureConnection,
-            'serverUri' => $this->serverUri,
-            'region' => $region ? $region : $this->defaultRegion
-        ]))->createRequest()->setMethod('POST');
+        return [
+            'ccs' => ['class' => 'xutl\qcloud\components\CCS'],
+            'account' => ['class' => 'xutl\tim\components\Account'],
+            'group' => ['class' => 'xutl\tim\components\Group'],
+        ];
     }
-
-
-    /**
-     * 用户账户
-     */
-    const API_ACCOUNT = 'account';
-
-    /**
-     * 账单
-     */
-    const API_BILL = 'bill';
-
-    /**
-     * 黑石BM
-     */
-    const API_BM = 'bm';
-
-    /**
-     * 云硬盘
-     */
-    const API_CBS = 'cbs';
-
-    /**
-     * CDB数据库
-     */
-    const API_CDB = 'cdb';
-
-    /**
-     * CDN
-     */
-    const API_CDN = 'cdn';
-
-    /**
-     * 云缓存
-     */
-    const API_CMEM = 'cmem';
-
-    /**
-     * 云解析
-     */
-    const API_CNS = 'cns';
-
-    /**
-     * 云服务器
-     */
-    const API_CVM = 'cvm';
-
-    /**
-     * 弹性公网Ip
-     */
-    const API_EIP = 'eip';
-
-    /**
-     * 镜像
-     */
-    const API_IMAGE = 'image';
-
-    /**
-     * 负载均衡
-     */
-    const API_LB = 'lb';
-
-    /**
-     * 直播
-     */
-    const API_LIVE = 'live';
-
-    /**
-     * MARKET
-     */
-    const API_MARKET = 'market';
-
-    /**
-     * 云监控
-     */
-    const API_MONITOR = 'monitor';
-
-    /**
-     * 弹性伸缩
-     */
-    const API_SCALING = 'scaling';
-
-    /**
-     * 云安全
-     */
-    const API_SEC = 'sec';
-
-    /**
-     * 快照
-     */
-    const API_SNAPSHOT = 'snapshot';
-
-    /**
-     * 云数据库TDSQL
-     */
-    const API_TDSQL = 'tdsql';
-
-    /**
-     * 产品售卖
-     */
-    const API_TRADE = 'trade';
-
-    /**
-     * 视频云
-     */
-    const API_VOD = 'vod';
-
-    /**
-     * VPC
-     */
-    const API_VPC = 'vpc';
-
-    /**
-     * 文智
-     */
-    const API_WENZHI = 'wenzhi';
-
-    /**
-     * 云搜
-     */
-    const API_YUNSOU = 'yunsou';
 }
