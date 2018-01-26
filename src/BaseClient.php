@@ -9,7 +9,6 @@ namespace xutl\qcloud;
 
 use yii\di\Instance;
 use yii\httpclient\Client;
-use yii\base\InvalidConfigException;
 use yii\httpclient\RequestEvent;
 
 /**
@@ -30,6 +29,11 @@ class BaseClient extends Client
      * @var string
      */
     public $secretKey;
+
+    /**
+     * @var string 操作的地域
+     */
+    public $region;
 
     /**
      * @var string
@@ -54,10 +58,8 @@ class BaseClient extends Client
         if (empty ($this->secretKey)) {
             $this->secretKey = $this->qcloud->secretKey;
         }
-        //$this->requestConfig['format'] = Client::FORMAT_JSON;
         $this->responseConfig['format'] = Client::FORMAT_JSON;
         $this->on(Client::EVENT_BEFORE_SEND, [$this, 'RequestEvent']);
-        //$this->on(Client::EVENT_AFTER_SEND, [$this, 'ResponseEvent']);
     }
 
     /**
@@ -68,7 +70,7 @@ class BaseClient extends Client
     public function RequestEvent(RequestEvent $event)
     {
         $params = $event->request->getData();
-        if ((isset($this->region) && !empty($this->region)) && !isset($params['Region'])) {
+        if (!empty($this->region) && !isset($params['Region'])) {
             $params['Region'] = $this->region;
         }
         $params['SecretId'] = $this->secretId;
@@ -77,7 +79,7 @@ class BaseClient extends Client
         $params['RequestClient'] = 'Yii2_HTTP_CLIENT';
         $params['SignatureMethod'] = $this->signatureMethod;
         ksort($params);
-        $url = $this->baseUrl;
+        $url = str_replace(['http://', 'https://'], '', $event->request->getFullUrl());
         $i = 0;
         foreach ($params as $key => $val) {
             if ($key == 'Signature' || ($event->request->getMethod() == 'POST' && substr($val, 0, 1) == '@')) {
@@ -98,7 +100,7 @@ class BaseClient extends Client
         } elseif ($this->signatureMethod == self::SIGNATURE_METHOD_HMAC_SHA1) {
             $params['Signature'] = base64_encode(hash_hmac('sha1', $plainText, $this->secretKey, true));
         }
-        $event->request->setUrl('index.php');
+
         $event->request->setData($params);
     }
 

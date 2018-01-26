@@ -18,7 +18,5 @@ use xutl\qcloud\BaseClient;
  */
 class Cdn extends BaseClient
 {
-    public $baseUrl = 'https://cdn.api.qcloud.com/v2';
-
-
+    public $baseUrl = 'https://cdn.api.qcloud.com/v2/index.php';
 }

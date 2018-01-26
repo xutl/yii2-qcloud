@@ -9,9 +9,11 @@ namespace xutl\qcloud;
 
 use yii\di\ServiceLocator;
 use yii\base\InvalidConfigException;
+use xutl\qcloud\components\Cdn;
 
 /**
  * Class QCloud
+ * @property Cdn $cdn CDN操控
  * @package xutl\qcloud
  */
 class QCloud extends ServiceLocator
@@ -72,15 +74,23 @@ class QCloud extends ServiceLocator
     }
 
     /**
-     * Returns the configuration of aliyun components.
+     * @return Cdn|object
+     * @throws InvalidConfigException
+     */
+    public function getCdn()
+    {
+        return $this->get('cdn');
+    }
+
+    /**
+     * Returns the configuration of qcloud components.
      * @see set()
      */
     public function coreComponents()
     {
         return [
             'ccs' => ['class' => 'xutl\qcloud\components\CCS'],
-            'account' => ['class' => 'xutl\tim\components\Account'],
-            'group' => ['class' => 'xutl\tim\components\Group'],
+            'cdn' => ['class' => 'xutl\qcloud\components\Cdn'],
         ];
     }
 }
