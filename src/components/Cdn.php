@@ -48,6 +48,8 @@ use xutl\qcloud\BaseClient;
  * @method generateLogList(array $params) 根据用户输入的域名 ID（仅支持一个），查询该域名一个月内每天的日志下载链接
  * @method getCdnLogList(array $params) 根据用户输入的域名，查询指定时间区间的日志下载链接
  *
+ * @see https://cloud.tencent.com/document/api/228/1722
+ *
  * @author Tongle Xu <xutongle@gmail.com>
  * @since 3.0
  */

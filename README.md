@@ -8,13 +8,13 @@
 - [x] CDN 内容分发网络
 - [x] DNS 云解析
 - [x] CMQ  消息队列
+- [x] CLB 负载均衡
 - [x] TIM [云通信](https://github.com/xutl/yii2-tim)
 
 ### 间接支持
 - [x] CVM 云服务器
 - [x] CPM 黑石物理服务器 
 - [x] AS 弹性伸缩
-- [x] CLB 负载均衡
 - [x] CCS 容器服务
 - [x] VPC 私有网络
 - [x] 其他使用同类通信加密解析协议的接口都支持。
@@ -75,5 +75,5 @@ print_r($response->data);
 ## 资源
 
 * [公共参数](http://wiki.qcloud.com/wiki/%E5%85%AC%E5%85%B1%E5%8F%82%E6%95%B0)
-* [API列表](http://wiki.qcloud.com/wiki/API)
+* [API列表](https://cloud.tencent.com/document/api)
 * [错误码](http://wiki.qcloud.com/wiki/%E9%94%99%E8%AF%AF%E7%A0%81)

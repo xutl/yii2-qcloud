@@ -26,6 +26,7 @@ use xutl\qcloud\BaseClient;
  * @method recordDelete(array $params) 删除解析记录
  *
  * @package xutl\qcloud\components
+ * @see https://cloud.tencent.com/document/api/302/4032
  *
  * @author Tongle Xu <xutongle@gmail.com>
  * @since 1.0
