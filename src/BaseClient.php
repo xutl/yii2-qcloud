@@ -104,6 +104,8 @@ class BaseClient extends Client
         $event->request->setData($params);
     }
 
+
+
     /**
      * 通过__call转发请求
      * @param string $name 方法名
