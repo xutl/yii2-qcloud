@@ -86,4 +86,33 @@ class ApiGateway extends Client
         $headers['Authorization'] = "hmac id=\"{$this->secretId}\", algorithm=\"{$this->signatureMethod}\", headers=\"date nonce\", signature=\"{$sign}\"";
         $event->request->addHeaders($headers);
     }
+
+    /**
+     * 发送请求
+     * @param string $method
+     * @param array|string $url
+     * @param array|string $data
+     * @param array $headers
+     * @param array $options
+     * @return array response data.
+     * @throws Exception
+     */
+    public function sendRequest($method, $url, $data, $headers, $options)
+    {
+        $request = $this->createRequest()
+            ->setMethod($method)
+            ->setUrl($url)
+            ->addHeaders($headers)
+            ->addOptions($options);
+        if (is_array($data)) {
+            $request->setData($data);
+        } else {
+            $request->setContent($data);
+        }
+        $response = $request->send();
+        if (!$response->isOk) {
+            throw new Exception('Request fail. response: ' . $response->content, $response->statusCode);
+        }
+        return $response->data;
+    }
 }
