@@ -49,9 +49,10 @@ return [
     'components' => [
         'api' => [
             'class' => 'xutl\qcloud\ApiGateway',//注意，绑定secretId、secretKey的接口一定要绑定使用计划，并且把使用计划指定给secretId
-                'baseUrl' => 'http://service-xxxxxxx.ap-shanghai.apigateway.myqcloud.com/test',
-                'secretId' => 'asdfasdfk;lasdf',
-                'secretKey' => '123123123',
+            'baseUrl' => 'http://service-xxxxxxx.ap-shanghai.apigateway.myqcloud.com/test',
+            'secretId' => 'asdfasdfk;lasdf',
+            'secretKey' => '123123123',
+            //注：使用方式同 YII2 自带的 httpclient 一致，这里只是封装了一下Header
         ],
         'qcloud' => [
             'class' => 'xutl\qcloud\Qcloud',
