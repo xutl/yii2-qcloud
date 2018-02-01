@@ -10,6 +10,7 @@
 - [x] CMQ  消息队列
 - [x] CLB 负载均衡
 - [x] TIM [云通信](https://github.com/xutl/yii2-tim)
+- [x] Api网关
 
 ### 间接支持
 - [x] CVM 云服务器
@@ -46,6 +47,12 @@ To use this extension, you have to configure the Connection class in your applic
 return [
     //....
     'components' => [
+        'api' => [
+            'class' => 'xutl\qcloud\ApiGateway',//注意，绑定secretId、secretKey的接口一定要绑定使用计划，并且把使用计划指定给secretId
+                'baseUrl' => 'http://service-xxxxxxx.ap-shanghai.apigateway.myqcloud.com/test',
+                'secretId' => 'asdfasdfk;lasdf',
+                'secretKey' => '123123123',
+        ],
         'qcloud' => [
             'class' => 'xutl\qcloud\Qcloud',
             'secretId' => 'abcdefg',
