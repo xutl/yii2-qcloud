@@ -12,6 +12,7 @@ use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\httpclient\Client;
 use yii\httpclient\RequestEvent;
+use yii\httpclient\Response;
 
 /**
  * Class ApiGateway
@@ -60,7 +61,6 @@ class ApiGateway extends Client
         if (empty ($this->secretKey)) {
             throw new InvalidConfigException ('The "secretKey" property must be set.');
         }
-        $this->responseConfig['format'] = Client::FORMAT_JSON;
         $this->on(Client::EVENT_BEFORE_SEND, [$this, 'RequestEvent']);
     }
 
@@ -94,7 +94,7 @@ class ApiGateway extends Client
      * @param array|string $data
      * @param array $headers
      * @param array $options
-     * @return array response data.
+     * @return Response response data.
      * @throws Exception
      */
     public function sendRequest($method, $url, $data, $headers, $options)
@@ -113,6 +113,6 @@ class ApiGateway extends Client
         if (!$response->isOk) {
             throw new Exception('Request fail. response: ' . $response->content, $response->statusCode);
         }
-        return $response->data;
+        return $response;
     }
 }
